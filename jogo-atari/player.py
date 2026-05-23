@@ -74,13 +74,32 @@ class Player(pygame.sprite.Sprite):
     def _draw_ship(self, surface):
         w, h = PLAYER_WIDTH, PLAYER_HEIGHT
         cx = w // 2
-        body_points = [(cx, 2), (4, h - 4), (w - 4, h - 4)]
-        pygame.draw.polygon(surface, CYAN, body_points)
-        pygame.draw.line(surface, WHITE, (cx, 6), (cx, h - 12), 2)
-        pygame.draw.polygon(surface, LIGHT_CYAN, [(4, h - 4), (0, h), (cx - 6, h - 10)])
-        pygame.draw.polygon(surface, LIGHT_CYAN, [(w - 4, h - 4), (w, h), (cx + 6, h - 10)])
-        pygame.draw.circle(surface, WHITE, (cx, h // 3 + 4), 4)
-        pygame.draw.polygon(surface, WHITE, body_points, 1)
+        
+        # Asas laterais
+        left_wing = [(cx, 10), (0, h - 15), (cx - 8, h - 10)]
+        right_wing = [(cx, 10), (w, h - 15), (cx + 8, h - 10)]
+        pygame.draw.polygon(surface, (0, 150, 200), left_wing)
+        pygame.draw.polygon(surface, (0, 150, 200), right_wing)
+        
+        # Fuselagem central (corpo principal)
+        fuselage = [(cx, 0), (cx - 10, h - 8), (cx + 10, h - 8)]
+        pygame.draw.polygon(surface, CYAN, fuselage)
+        
+        # Motores inferiores
+        pygame.draw.rect(surface, (100, 100, 100), (cx - 12, h - 8, 8, 6))
+        pygame.draw.rect(surface, (100, 100, 100), (cx + 4, h - 8, 8, 6))
+        
+        # Cabine / Cockpit
+        cockpit = [(cx, 15), (cx - 4, 30), (cx, 35), (cx + 4, 30)]
+        pygame.draw.polygon(surface, WHITE, cockpit)
+        
+        # Detalhes de alta tecnologia (linhas)
+        pygame.draw.line(surface, LIGHT_CYAN, (cx, 5), (cx, h - 10), 2)
+        
+        # Contornos gerais
+        pygame.draw.polygon(surface, WHITE, fuselage, 1)
+        pygame.draw.polygon(surface, LIGHT_CYAN, left_wing, 1)
+        pygame.draw.polygon(surface, LIGHT_CYAN, right_wing, 1)
 
     def update(self):
         keys = pygame.key.get_pressed()
@@ -121,6 +140,10 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_RIGHT]:
                 self.rect.x += PLAYER_SPEED
                 self.target_tilt = -8
+            if keys[pygame.K_UP]:
+                self.rect.y -= PLAYER_SPEED
+            if keys[pygame.K_DOWN]:
+                self.rect.y += PLAYER_SPEED
                 
         if self.dash_cooldown > 0:
             self.dash_cooldown -= 1
@@ -135,6 +158,8 @@ class Player(pygame.sprite.Sprite):
 
         if self.rect.left < 0: self.rect.left = 0
         if self.rect.right > SCREEN_WIDTH: self.rect.right = SCREEN_WIDTH
+        if self.rect.top < 0: self.rect.top = 0
+        if self.rect.bottom > SCREEN_HEIGHT: self.rect.bottom = SCREEN_HEIGHT
 
         # Partículas e timers
         for _ in range(THRUSTER_PARTICLE_COUNT):

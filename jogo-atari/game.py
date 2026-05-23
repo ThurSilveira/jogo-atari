@@ -159,7 +159,7 @@ def run_game():
 
             for ast in asteroids:
                 if ast.rect.top > SCREEN_HEIGHT:
-                    game_over = True; break
+                    ast.kill() # Remove o asteroide sem perder o jogo
 
         # Atualizar Efeitos
         for exp in explosions: exp.update()
