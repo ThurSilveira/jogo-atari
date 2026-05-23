@@ -27,6 +27,32 @@ env/
 ENV/
 .env
 .env.*
+*.env.local
+*.env.development.local
+*.env.test.local
+*.env.production.local
+
+# ==============================================
+# Node.js / NPM
+# ==============================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+.npm/
+.yarn/
+
+# ==============================================
+# Build / Dist (Frontend)
+# ==============================================
+dist/
+build/
+.next/
+out/
+.vite/
+*.local
 
 # ==============================================
 # Dados sensíveis / configurações locais
@@ -48,6 +74,7 @@ config_local.py
 *~
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # ==============================================
 # Logs e bancos de dados locais
@@ -61,6 +88,7 @@ Thumbs.db
 # ==============================================
 .claude/
 .agents/
+.agent/
 
 # ==============================================
 # Arquivos de build / distribuição
@@ -68,3 +96,11 @@ Thumbs.db
 *.spec
 *.exe
 *.app
+
+# ==============================================
+# Cobertura de testes
+# ==============================================
+coverage/
+.coverage
+htmlcov/
+.nyc_output/
